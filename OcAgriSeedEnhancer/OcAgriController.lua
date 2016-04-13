@@ -3,6 +3,8 @@ local compontents = require("compontents")
 local geoLeft = compontents.proxy("")
 local geoCenter = compontents.proxy("")
 local geoRight = compontents.proxy("")
+-- add Redstone address
+local rs = compontents.proxy("")
 
 local tableGeoLeft = {}
 local tableGeoRight = {}
