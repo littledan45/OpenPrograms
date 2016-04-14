@@ -4,70 +4,67 @@ local io = require("io")
 local serial = require("serialization")
 local fs = component.filesystem
 --local rs = component.redstone
--- add Geolyzer address
--- TODO fix Geolyzer proxies
--- example geolyzer[centerAddress, centerFace]
-local geolyzer = {}
+-- example analyzer[centerAddress, centerFace]
+local analyzer = {}
 
--- seed tables for each geolyzer
-local tableGeoLeft = {}
-local tableGeoCenter = {}
-local tableGeoRight = {}
-
-function initMakeGeoFile()
-  local geoTab = {}
-  for _add,_ in pairs(component.list("geolyzer")) do
-    table.insert(geoTab, _add)
+function initMakeAnaFile()
+  local anaTab = {}
+  for _add,_ in pairs(component.list("agricraft_peripheral")) do
+    table.insert(anaTab, _add)
   end
-  for k,d in pairs(geoTab) do
+  for k,d in pairs(anaTab) do
     print(k, d)
   end
-  -- Get geolyzer address from user
-  term.write("Insert the number for the Center Geolyzer\n")
-  local geoCenterAddress = tonumber(term.read())
-  term.write("Insert the number for the Left Geolyzer\n")
-  local geoLeftAddress = tonumber(term.read())
-  term.write("Insert the number for the Right Geolyzer\n")
-  local geoRightAddress = tonumber(term.read())
-  term.write("What side are the Crops? (use Minecraft directions 0-3)\n")
-  local geoFace = tonumber(term.read())
-  -- Add geolyzer address & face to main table
-  geolyzer.centerAddress = component.proxy(geoTab[geoCenterAddress])
-  geolyzer.leftAddress = component.proxy(geoTab[geoLeftAddress])
-  geolyzer.rightAddress = component.proxy(geoTab[geoRightAddress])
-  geolyzer.face = geoFace
-  -- Write geolyzer table to file
+  -- Get analyzer address from user
+  local directions = {"NORTH", "SOUTH", "WEST", "EAST"}
+  term.write("Insert the number for the Center Analyzer\n")
+  local anaCenterAddress = tonumber(term.read())
+  term.write("Insert the number for the Left Analyzer\n")
+  local anaLeftAddress = tonumber(term.read())
+  term.write("Insert the number for the Right Analyzer\n")
+  local anaRightAddress = tonumber(term.read())
+  for k,d in pairs(directions) do
+    term.write(k, d)
+  end
+  term.write("What side are the Crops?\n")
+  local anaFace = tonumber(term.read())
+  -- Add analyzer address & face to main table
+  analyzer.centerAddress = component.proxy(anaTab[anaCenterAddress])
+  analyzer.leftAddress = component.proxy(anaTab[anaLeftAddress])
+  analyzer.rightAddress = component.proxy(anaTab[anaRightAddress])
+  analyzer.face = directions[anaFace]
+  -- Write analyzer table to file
   if fs.exists("/home/config") then
     print("config folder exists")
   else
     fs.makeDirectory("/home/config")
     print("made config directory")
   end
-  local serialGeolyzer = serial.serialize(geolyzer)
+  local serialanalyzer = serial.serialize(analyzer)
   local file = io.open("/home/config/oc-agri-seed-enhancer.cfg", "w")
-  file:write(serialGeolyzer)
+  file:write(serialanalyzer)
   file:close()
 end
 
-function initGetGeoFile()
+function initGetAnaFile()
   if fs.exists("/home/config/oc-agri-seed-enhancer.cfg") then
     local file = io.open("/home/config/oc-agri-seed-enhancer.cfg", "r")
-    local serialGeolyzer = file:read()
-    geolyzer = serial.unserialize(serialGeolyzer)
+    local serialanalyzer = file:read()
+    analyzer = serial.unserialize(serialanalyzer)
   else
     print("Config file dosen't exist but why did I Run?")
   end
 end
 
 function init()
+  term.clear()
   if fs.exists("/home/config/oc-agri-seed-enhancer.cfg") then
-    initGetGeoFile()
+    initGetAnaFile()
   else
-    initMakeGeoFile()
+    initMakeAnaFile()
   end
-  -- if air
+--check if block is air or seed
 
-  -- if crops
 end
 
 init()
