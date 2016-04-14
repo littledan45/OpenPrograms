@@ -56,6 +56,7 @@ function initGetGeoFile()
     geolyzer = serial.unserialize(serialGeolyzer)
   else
     print("Config file dosen't exist but why did I Run?")
+  end
 end
 
 function init()
