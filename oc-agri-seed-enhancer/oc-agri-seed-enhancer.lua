@@ -5,7 +5,7 @@ local serial = require("serialization")
 local fs = component.filesystem
 local API = require("ocAgriSeedEnhancerAPI")
 
-API.checkConfig("analyzerLeft")
+print(API.checkConfig("analyzerLeft"))
 --local analyzerLeft component.proxy(--TODO)
 --local analyzerCenter component.proxy(--TODO)
 --local analyzerRight component.proxy(--TODO)

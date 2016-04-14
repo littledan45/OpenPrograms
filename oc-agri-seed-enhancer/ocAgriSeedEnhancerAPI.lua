@@ -33,8 +33,10 @@ function writeConfig(fileName)
   file:close()
 end
 
-function readConfig()
---TODO
+function readConfig(fileName)
+  local file = io.open("/home/config/"..fileName, "r")
+  local serialTable = file:read()
+  return serial.unserialize(serialTable)
 end
 
 function API.checkConfig(fileName)
@@ -45,7 +47,7 @@ function API.checkConfig(fileName)
     fs.makeDirectory("/home/config")
   end
   if fs.exists("/home/config/"..configName) then
-    -- it exists TODO have to add readConfig
+    return readConfig(configName)
   else
     writeConfig(fileName)
   end
