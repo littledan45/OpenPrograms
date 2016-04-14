@@ -25,18 +25,20 @@ end
 
 function writeConfig(fileName)
   local configName = fileName..".cfg"
-  local tempTable = {}
-  tempTable[fileName] = getAnalyzer(fileName)
-  local sTempTable = serial.serialize(tempTable)
+  --local tempTable = {}
+  --tempTable[fileName] = getAnalyzer(fileName)
+  local address = getAnalyzer(fileName)
+  --local sTempTable = serial.serialize(tempTable)
   local file = io.open("/home/config/"..configName, "w")
-  file:write(sTempTable)
+  file:write(address)
   file:close()
 end
 
 function readConfig(fileName)
   local file = io.open("/home/config/"..fileName, "r")
   local serialTable = file:read()
-  return serial.unserialize(serialTable)
+  --return serial.unserialize(serialTable)
+  return serialTable
 end
 
 function API.checkConfig(fileName)
@@ -47,7 +49,10 @@ function API.checkConfig(fileName)
     fs.makeDirectory("/home/config")
   end
   if fs.exists("/home/config/"..configName) then
-    return readConfig(configName)
+    print(configName.. "exists")
+    local result = readConfig(configName)
+    print(result)
+    return result
   else
     writeConfig(fileName)
   end
