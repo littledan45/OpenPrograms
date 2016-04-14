@@ -49,8 +49,21 @@ function initMakeGeoFile()
   file:close()
 end
 
+function initGetGeoFile()
+  if fs.exists("/home/config/oc-agri-seed-enhancer.cfg") then
+    local file = io.open("/home/config/oc-agri-seed-enhancer.cfg", "r")
+    local serialGeolyzer = file:read()
+    geolyzer = serial.unserialize(serialGeolyzer)
+  else
+    print("Config file dosen't exist but why did I Run?")
+end
+
 function init()
-  initMakeGeoFile()
+  if fs.exists("/home/config/oc-agri-seed-enhancer.cfg") then
+    initGetGeoFile()
+  else
+    initMakeGeoFile()
+  end
   -- if air
 
   -- if crops
