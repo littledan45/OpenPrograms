@@ -2,6 +2,7 @@ local component = require("component")
 local io = require("io")
 local fs = require("filesystem")
 local serial = require("serialization")
+local term = require("term")
 
 local API = {}
 
