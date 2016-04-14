@@ -2,6 +2,7 @@ local component = require("component")
 local term = require("term")
 local io = require("io")
 local serial = require("serialization")
+local fs = component.filesystem
 --local rs = component.redstone
 -- add Geolyzer address
 -- TODO fix Geolyzer proxies
@@ -36,8 +37,14 @@ function initMakeGeoFile()
   geolyzer.rightAddress = component.proxy(geoTab[geoRightAddress])
   geolyzer.face = geoFace
   -- Write geolyzer table to file
+  if fs.exists("/home/config") then
+    print("config folder exists")
+  else
+    fs.makeDirectory("/home/config")
+    print("made config directory")
+  end
   local serialGeolyzer = serial.serialize(geolyzer)
-  file = io.open("/home/config/oc-agri-seed-enhancer.cfg", "w")
+  local file = io.open("/home/config/oc-agri-seed-enhancer.cfg", "w")
   file:write(serialGeolyzer)
   file:close()
 end
