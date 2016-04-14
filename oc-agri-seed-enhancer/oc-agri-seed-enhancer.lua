@@ -6,6 +6,10 @@ local fs = component.filesystem
 local API = require("ocAgriSeedEnhancerAPI")
 
 print(API.checkConfig("analyzerLeft"))
---local analyzerLeft component.proxy(--TODO)
---local analyzerCenter component.proxy(--TODO)
---local analyzerRight component.proxy(--TODO)
+local analyzerLeft = component.proxy(API.checkConfig("analyzerLeft"))
+--local analyzerCenter = component.proxy(--TODO)
+--local analyzerRight = component.proxy(--TODO)
+
+local res = analyzerLeft.hasPlant("NORTH")
+
+print(res)
