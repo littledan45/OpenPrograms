@@ -18,16 +18,17 @@ function getAnalyzer(configFileName)
     print(k, d)
   end
 
-  print("Please select the", configFileName)
+  print("Please select", configFileName)
   local _id = tonumber(io.read())
   return _analyzers[_id]
 end
 
 function writeConfig(fileName)
+  local configName = fileName..".cfg"
   local tempTable = {}
   tempTable[fileName] = getAnalyzer(fileName)
   local sTempTable = serial.serialize(tempTable)
-  local file = io.open("/home/config/"..fileName.."cfg", "w")
+  local file = io.open("/home/config/"..configName, "w")
   file:write(sTempTable)
   file:close()
 end
@@ -37,15 +38,17 @@ function readConfig()
 end
 
 function API.checkConfig(fileName)
+  local configName = fileName..".cfg"
   if fs.exists("/home/config") then
     print("config exists")
   else
     fs.makeDirectory("/home/config")
   end
-  if fs.exists("/home/config/"..fileName..".cfg") then
+  if fs.exists("/home/config/"..configName) then
     -- it exists TODO have to add readConfig
   else
     writeConfig(fileName)
+  end
 end
 
 return API
