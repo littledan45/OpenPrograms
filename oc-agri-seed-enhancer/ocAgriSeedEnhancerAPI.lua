@@ -68,7 +68,7 @@ function API.checkConfig(fileName)
   if fs.exists("/home/config/"..configName) then
     return readConfig(configName)
   else
-    if fileName == analyzerFace then
+    if fileName == "analyzerFace" then
       writeConfig(fileName)
       return readConfig(configName)
 
