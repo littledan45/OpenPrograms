@@ -6,9 +6,10 @@ local serial = require("serialization")
 local API = {}
 
 function getAnalyzer(configFileName)
+  print("Starting getAnalyzer with Filename", configFileName)
   local _analyzers = {}
   local _repeater = 1
-  for add,_ pairs(component.list("agricraft_peripheral")) do
+  for add,_ in pairs(component.list("agricraft_peripheral")) do
     _analyzers[_repeater] = add
     _repeater = _repeater + 1
   end
