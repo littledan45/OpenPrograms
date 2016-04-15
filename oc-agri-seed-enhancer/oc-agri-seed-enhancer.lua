@@ -12,13 +12,13 @@ local rs = component.redstone
 local API = require("ocAgriSeedEnhancerAPI")
 -- Get Analyzer Addresses
 
-local tabAnalyzerLeft = {} --TODO add config table
-local tabAnalyzerCenter = {} --TODO add config table
-local tabAnalyzerRight = {} --TODO add config table
+local tabAnalyzerLeft = {} API.checkConfig("analyzerLeft")
+local tabAnalyzerCenter = {} API.checkConfig("analyzerCenter")
+local tabAnalyzerRight = {} API.checkConfig("analyzerRight")
 
-local analyzerLeft = component.proxy(API.checkConfig("analyzerLeft"))
-local analyzerCenter = component.proxy(API.checkConfig("analyzerCenter"))
-local analyzerRight = component.proxy(API.checkConfig("analyzerRight"))
+local analyzerLeft = component.proxy(tabAnalyzerLeft.address)
+local analyzerCenter = component.proxy(tabAnalyzerCenter.address)
+local analyzerRight = component.proxy(tabAnalyzerRight.address)
 -- Get what they are facing eg("NORTH")
 local analyzerFace = API.checkConfig("analyzerFace")
 -- Variables

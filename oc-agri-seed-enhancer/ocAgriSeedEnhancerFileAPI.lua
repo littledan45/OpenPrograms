@@ -3,6 +3,7 @@ local io = require("io")
 local fs = require("filesystem")
 local serial = require("serialization")
 local term = require("term")
+local colors = require("colors")
 
 local API = {}
 
@@ -37,15 +38,26 @@ function writeAnalyzerConfig(fileName)
   local configName = fileName..".cfg"
   local temp = {}
   temp.address = getAnalyzerAddress(fileName)
-  temp.rsStickColor = --TODO get Stick color
-  temp.rsBreakerColor = --TODO get Breaker color
-  if fileName == "analyzerCenter" then
-    temp.rsCrossColor = --TODO add Cross color
+  if fileName == "analyzerLeft" then
+    temp.rsStickColor = colors.orange
+    temp.rsBreakerColor = colors.grey
+    temp.rsSeedColor = colors.yellow
+  elseif fileName == "analyzerCenter" then
+    temp.rsStickColor = colors.magenta
+    temp.rsBreakerColor = colors.silver
+    temp.rsCrossColor = colors.pink
+  elseif fileName == "analyzerRight" then
+    temp.rsStickColor = colors.lightblue
+    temp.rsBreakerColor = colors.cyan
+    temp.rsSeedColor = colors.lime
   else
-    temp.rsSeedColor = --TODO add seed color
+    print("cannot find Analyzer Name in writeAnalyzerConfig")
   end
+
+  local sTemp = serial.serialize(temp)
+
   local file = io.open("/home/config/"..configName, "w")
-  file:write(address)
+  file:write(sTemp)
   file:close()
 end
 
@@ -61,7 +73,7 @@ function readConfig(fileName)
   local file = io.open("/home/config/"..fileName, "r")
   local serialTable = file:read()
   file:close()
-  return serialTable
+  return serial.unserialize(serialTable)
 end
 
 function API.checkConfig(fileName)
