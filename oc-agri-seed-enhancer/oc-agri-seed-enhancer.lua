@@ -17,9 +17,9 @@ local analyzerDetails = {}
 function checkPlantDetails(analyzer, tabHasPlant)
   if tabHasPlant == true then
     local tempTab = {}
-    analyzerDetails[analyzer.."Growth"], analyzerDetails[analyzer.."Gain"], analyzerDetails[analyzer.."Strength"] = growthanalyzer.getSpecimenStats(analyzerFace)
-    --tempTab.growth, tempTab.gain, tempTab.strength = growthanalyzer.getSpecimenStats(analyzerFace)
-    --return tempTab
+    --analyzerDetails[analyzer.."Growth"], analyzerDetails[analyzer.."Gain"], analyzerDetails[analyzer.."Strength"] = growthanalyzer.getSpecimenStats(analyzerFace)
+    tempTab.growth, tempTab.gain, tempTab.strength = growthanalyzer.getSpecimenStats(analyzerFace)
+    return tempTab.growth, tempTab.gain, tempTab.strength
   elseif tabHasPlant == false then
     print("Only weeds here")
     -- TODO break sticks and place with seeds
@@ -45,7 +45,7 @@ function initCheck()
   analyzerDetails.analyzerRightHasPlant = checkWeedOrPlant(analyzerRight)
 
   --local tempTab = checkPlantDetails(analyzerLeft, analyzerDetails.analyzerLeftHasPlant)
-  checkPlantDetails(analyzerLeft, analyzerDetails.analyzerLeftHasPlant)
+  analyzerDetails.analyzerLeftGrowth, analyzerDetails.analyzerLeftGain, analyzerDetails.analyzerLeftStrength = checkPlantDetails(analyzerLeft, analyzerDetails.analyzerLeftHasPlant)
   --analyzerDetails.analyzerLeftGrowth = tempTab.growth
   --analyzerDetails.analyzerLeftGain = tempTab.gain
   --analyzerDetails.analyzerLeftStrength = tempTab.strength
