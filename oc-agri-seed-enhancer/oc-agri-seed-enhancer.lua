@@ -3,8 +3,19 @@ local term = require("term")
 local io = require("io")
 local serial = require("serialization")
 local fs = component.filesystem
+local gpu = component.gpu
+-- place first stick orange=left, magenta=center, lightblue=right
+-- place seeds yellow=left, lime=right
+-- place second stick pink=center
+-- break grey=left, silver=center, cyan=right
+local rs = component.redstone
 local API = require("ocAgriSeedEnhancerAPI")
 -- Get Analyzer Addresses
+
+local tabAnalyzerLeft = {} --TODO add config table
+local tabAnalyzerCenter = {} --TODO add config table
+local tabAnalyzerRight = {} --TODO add config table
+
 local analyzerLeft = component.proxy(API.checkConfig("analyzerLeft"))
 local analyzerCenter = component.proxy(API.checkConfig("analyzerCenter"))
 local analyzerRight = component.proxy(API.checkConfig("analyzerRight"))
@@ -14,18 +25,26 @@ local analyzerFace = API.checkConfig("analyzerFace")
 local analyzerDetails = {}
 --local analyzerSpecimenStats = {}
 
-function checkPlantDetails(analyzer, tabHasPlant)
+function checkInitPlantDetails(analyzer, tabHasPlant)
   if tabHasPlant == true then
-    local tempTab = {}
-    --analyzerDetails[analyzer.."Growth"], analyzerDetails[analyzer.."Gain"], analyzerDetails[analyzer.."Strength"] = growthanalyzer.getSpecimenStats(analyzerFace)
-    tempTab.growth, tempTab.gain, tempTab.strength = growthanalyzer.getSpecimenStats(analyzerFace)
-    return tempTab.growth, tempTab.gain, tempTab.strength
+    return analyzer.getSpecimenStats(analyzerFace)
   elseif tabHasPlant == false then
-    print("Only weeds here")
-    -- TODO break sticks and place with seeds
+    if analyzer ~= analyzerCenter then
+      gpu.setForeground(0xff0000)
+      print("Only weeds here. Please place seeds and restart the program")
+      gpu.setForeground(0xffffff)
+      os.exit()
+    else
+      --TODO break sticks
+    end
   else
-    print("There are no crop sticks")
-    -- TODO put down crop sticks and seeds
+    if analyzer ~= analyzerCenter then
+      gpu.setForeground(0xff0000)
+      print("There are no crop sticks")
+      print("Please place seeds and restart the program")
+      gpu.setForeground(0xffffff)
+      os.exit()
+    end
   end
 end
 
@@ -44,9 +63,7 @@ function initCheck()
   analyzerDetails.analyzerCenterHasPlant = checkWeedOrPlant(analyzerCenter)
   analyzerDetails.analyzerRightHasPlant = checkWeedOrPlant(analyzerRight)
 
-  --local tempTab = checkPlantDetails(analyzerLeft, analyzerDetails.analyzerLeftHasPlant)
-  analyzerDetails.analyzerLeftGrowth, analyzerDetails.analyzerLeftGain, analyzerDetails.analyzerLeftStrength = checkPlantDetails(analyzerLeft, analyzerDetails.analyzerLeftHasPlant)
-  --analyzerDetails.analyzerLeftGrowth = tempTab.growth
-  --analyzerDetails.analyzerLeftGain = tempTab.gain
-  --analyzerDetails.analyzerLeftStrength = tempTab.strength
+  analyzerDetails.analyzerLeftGrowth, analyzerDetails.analyzerLeftGain, analyzerDetails.analyzerLeftStrength = checkInitPlantDetails(analyzerLeft, analyzerDetails.analyzerLeftHasPlant)
+  analyzerDetails.analyzerCenterGrowth, analyzerDetails.analyzerCenterGain, analyzerDetails.analyzerCenterStrength = checkInitPlantDetails(analyzerCenter, analyzerDetails.analyzerCenterHasPlant)
+  analyzerDetails.analyzerRightGrowth, analyzerDetails.analyzerRightGain, analyzerDetails.analyzerRightStrength = checkInitPlantDetails(analyzerRight, analyzerDetails.analyzerRightHasPlant)
 end

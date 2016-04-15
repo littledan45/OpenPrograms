@@ -6,8 +6,8 @@ local term = require("term")
 
 local API = {}
 
-function getAnalyzer(configFileName)
-  print("Starting getAnalyzer with Filename", configFileName)
+function getAnalyzerAddress(configFileName)
+  print("Starting getAnalyzerAddress with Filename", configFileName)
   local _analyzers = {}
   local _repeater = 1
   for add,_ in pairs(component.list("agricraft_peripheral")) do
@@ -35,13 +35,21 @@ end
 
 function writeAnalyzerConfig(fileName)
   local configName = fileName..".cfg"
-  local address = getAnalyzer(fileName)
+  local temp = {}
+  temp.address = getAnalyzerAddress(fileName)
+  temp.rsStickColor = --TODO get Stick color
+  temp.rsBreakerColor = --TODO get Breaker color
+  if fileName == "analyzerCenter" then
+    temp.rsCrossColor = --TODO add Cross color
+  else
+    temp.rsSeedColor = --TODO add seed color
+  end
   local file = io.open("/home/config/"..configName, "w")
   file:write(address)
   file:close()
 end
 
-function writeConfig(fileName)
+function writeFaceConfig(fileName)
   local configName = fileName..".cfg"
   local res = getAnalyzerFace()
   local file = io.open("/home/config/"..configName, "w")
@@ -69,7 +77,7 @@ function API.checkConfig(fileName)
     return readConfig(configName)
   else
     if fileName == "analyzerFace" then
-      writeConfig(fileName)
+      writeFaceConfig(fileName)
       return readConfig(configName)
 
     else
