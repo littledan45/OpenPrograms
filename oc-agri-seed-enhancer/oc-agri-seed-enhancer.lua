@@ -9,12 +9,12 @@ local gpu = component.gpu
 -- place second stick pink=center
 -- break grey=left, silver=center, cyan=right
 local rs = component.redstone
-local API = require("ocAgriSeedEnhancerAPI")
+local API = require("ocAgriSeedEnhancerFileAPI")
 -- Get Analyzer Addresses
 
-local tabAnalyzerLeft = {} API.checkConfig("analyzerLeft")
-local tabAnalyzerCenter = {} API.checkConfig("analyzerCenter")
-local tabAnalyzerRight = {} API.checkConfig("analyzerRight")
+local tabAnalyzerLeft = API.checkConfig("analyzerLeft")
+local tabAnalyzerCenter = API.checkConfig("analyzerCenter")
+local tabAnalyzerRight = API.checkConfig("analyzerRight")
 
 local analyzerLeft = component.proxy(tabAnalyzerLeft.address)
 local analyzerCenter = component.proxy(tabAnalyzerCenter.address)

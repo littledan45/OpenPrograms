@@ -69,11 +69,18 @@ function writeFaceConfig(fileName)
   file:close()
 end
 
-function readConfig(fileName)
+function readAnalyzerConfig(fileName)
   local file = io.open("/home/config/"..fileName, "r")
   local serialTable = file:read()
   file:close()
   return serial.unserialize(serialTable)
+end
+
+function readFaceConfig(fileName)
+  local file = io.open("/home/config/"..fileName, "r")
+  local serialTable = file:read()
+  file:close()
+  return serialTable
 end
 
 function API.checkConfig(fileName)
@@ -86,15 +93,19 @@ function API.checkConfig(fileName)
   end
 
   if fs.exists("/home/config/"..configName) then
-    return readConfig(configName)
+    if fileName == "analyzerFace" then
+      return readFaceConfig(configName)
+    else
+      return readAnalyzerConfig(configName)
+    end
+    return readAnalyzerConfig(configName)
   else
     if fileName == "analyzerFace" then
       writeFaceConfig(fileName)
-      return readConfig(configName)
-
+      return readFaceConfig(configName)
     else
       writeAnalyzerConfig(fileName)
-      return readConfig(configName)
+      return readAnalyzerConfig(configName)
     end
   end
 end
