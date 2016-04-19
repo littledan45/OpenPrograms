@@ -8,7 +8,7 @@ local colors = require("colors")
 local API = {}
 
 function getAnalyzerAddress(configFileName)
-  print("Starting getAnalyzerAddress with Filename", configFileName)
+  --print("Starting getAnalyzerAddress with Filename", configFileName)
   local _analyzers = {}
   local _repeater = 1
   for add,_ in pairs(component.list("agricraft_peripheral")) do
@@ -42,14 +42,17 @@ function writeAnalyzerConfig(fileName)
     temp.rsStickColor = colors.orange
     temp.rsBreakerColor = colors.grey
     temp.rsSeedColor = colors.yellow
+    temp.rsExtractSeed = colors.green
   elseif fileName == "analyzerCenter" then
     temp.rsStickColor = colors.magenta
     temp.rsBreakerColor = colors.silver
     temp.rsCrossColor = colors.pink
+    temp.rsTrashSeed = colors.purple
   elseif fileName == "analyzerRight" then
     temp.rsStickColor = colors.lightblue
     temp.rsBreakerColor = colors.cyan
     temp.rsSeedColor = colors.lime
+    temp.rsExtractSeed = colors.brown
   else
     print("cannot find Analyzer Name in writeAnalyzerConfig")
   end
@@ -87,7 +90,7 @@ function API.checkConfig(fileName)
   local configName = fileName..".cfg"
 -- Check if the config folder exist
   if fs.exists("/home/config") then
-    print("config exists")
+    --print("config exists")
   else
     fs.makeDirectory("/home/config")
   end
