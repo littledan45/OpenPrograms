@@ -12,6 +12,10 @@ _,_,p,m = event.pull("chat_message")
 print(p,m)
 
 function main()
+	rsControl()
+end
+
+function rsControl()
 	if auth(p) == true then
 		result = get_command(m)
 		if result["key"] == true then
