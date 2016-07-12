@@ -4,9 +4,10 @@ local sides = require("sides")
 local analyzer = component.proxy("")
 local rs = component.redstone
 local chat = component.chat_box
+local term = require("term")
  
 local running = true
-local seed = "Potato Seeds"
+local seed = nil
 local analyzerFace = "NORTH"
 chat.setName("Mandy")
 chat.setDistance(100)
@@ -18,6 +19,12 @@ local rsPlaceCrossCenter = colors.green
  
  
 function main()
+  term.clear()
+  seed = term.read()
+  if seed == nil then
+    print("Seed can not be nil")
+    seed = term.read()
+  end
   while running == true do
     getState()
     os.sleep(5)
